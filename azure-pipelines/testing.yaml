@@ -21,9 +21,29 @@ stages:
               echo $(name)
             displayName: "simple echo"
 
+          - bash: |
+              echo "This is job Foo."
+              echo "##vso[task.setvariable variable=Result;isOutput=true]Succeeded" #set variable Result to Succeeded
+            name: result
+
       - job: DeployJob
         dependsOn: BuildJob
-        condition: eq(dependencies.BuildJob.a.outputs['result'], 'Succeeded')
+        condition: eq(dependencies.BuildJob.a.outputs['result.Result'], 'Succeeded')
+        strategy:
+          matrix:
+            a:
+              name: a
+            b:
+              name: b
+
+        steps:
+          - script: |
+              echo $(name)
+            displayName: "simple echo"
+
+      - job: DeployJob2
+        dependsOn: BuildJob
+        condition: eq(dependencies.BuildJob.outputs['BuildJob.a.result.Result'], 'Succeeded')
         strategy:
           matrix:
             a:
