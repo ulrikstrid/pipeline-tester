@@ -8,21 +8,20 @@ pool:
 stages:
   - stage: Build
     jobs:
-      - job: BuildJob
-        strategy:
-          matrix:
-            a:
-              name: a
-            b:
-              name: b
-
+      - job: PrepareMatrix
         steps:
           - script: |
-              echo $(name)
-            displayName: "simple echo"
+              echo '##vso[task.setvariable variable=jobMatrix;isoutput=true][{"name":"a","name":"b"}]'
+            name: "matrix"
 
+      - job: BuildJob
+        dependsOn: PrepareMatrix
+        strategy:
+          matrix: $[ dependencies.PrepareMatrix.outputs['matrix.jobMatrix'] ]
+
+        steps:
           - bash: |
-              echo "This is job Foo."
+              echo "This is job $(name)."
               echo "##vso[task.setvariable variable=jobResult;isoutput=true]Succeeded"
             name: SetResult
 
