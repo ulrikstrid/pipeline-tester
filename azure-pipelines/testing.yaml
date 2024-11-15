@@ -32,7 +32,7 @@ stages:
           jobMatrix: $[ dependencies.PrepareMatrix.outputs['matrix.jobMatrix'] ]
         strategy:
           matrix:
-            ${{ each job in variables['jobMatrix'] }}:
+            ${{ each job in fromJson(variables['jobMatrix']) }}:
               ${{ job.name }}:
                 name: ${{ job.name }}
 
