@@ -10,10 +10,8 @@ stages:
     jobs:
       - job: PrepareMatrix
         steps:
-          - script: |
-              echo '[{"name":"a"},{"name":"b"}]' > matrix.json
-              cat matrix.json
-              echo "##vso[task.setvariable variable=jobMatrix;isoutput=true]$(cat matrix.json)"
+          - bash: |
+              echo "##vso[task.setVariable variable=jobMatrix;isOutput=true]{'a':{'name':'a'}, 'b':{'name':'b'}}"
             name: "matrix"
 
       - job: BuildJob
