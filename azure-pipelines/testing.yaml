@@ -23,12 +23,14 @@ stages:
 
           - bash: |
               echo "This is job Foo."
-              echo "##vso[task.setvariable variable=Result;isOutput=true]Succeeded" #set variable Result to Succeeded
-            name: result
+              echo "##vso[task.setvariable variable=jobResult;isoutput=true]Succeeded"
+            name: SetResult
 
       - job: DeployJob
         dependsOn: BuildJob
-        condition: eq(dependencies.BuildJob.outputs['a_result.Result'], 'Succeeded')
+        variables:
+          resultVar: $[ dependencies.BuildJob.outputs['SetResult.jobResult'] ]
+        condition: eq(variables['resultVar'], 'Succeeded')
         strategy:
           matrix:
             a:
