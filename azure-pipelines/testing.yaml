@@ -27,13 +27,12 @@ stages:
 
       - job: DeployJob
         dependsOn: BuildJob
-        condition: eq(dependencies.BuildJob.outputs['$(name).SetResult.jobResult'], 'Succeeded')
+        condition: eq(dependencies.BuildJob.outputs['a.SetResult.jobResult'], 'Succeeded')
         strategy:
           matrix:
-            a:
-              name: a
-            b:
-              name: b
+            ${{ each job independencies.PrepareMatrix.outputs['matrix.jobMatrix'] }}:
+              ${{ job.name }}:
+                name: ${{ job.name }}
 
         steps:
           - script: |
