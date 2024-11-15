@@ -28,7 +28,7 @@ stages:
       - job: DeployJob
         dependsOn: [PrepareMatrix, BuildJob]
         variables:
-          jobMatrix: $[ fromJson(dependencies.PrepareMatrix.outputs['matrix.jobMatrix']) ]
+          jobMatrix: $[ dependencies.PrepareMatrix.outputs['matrix.jobMatrix'] ]
         strategy:
           matrix:
             ${{ each job in variables['jobMatrix'] }}:
