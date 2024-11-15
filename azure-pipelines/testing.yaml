@@ -1,0 +1,36 @@
+trigger:
+  - main
+  - develop
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildJob
+        strategy:
+          matrix:
+            a:
+              name: a
+            b:
+              name: b
+
+        steps:
+          - script: |
+              echo $(name)
+            displayName: "simple echo"
+
+      - job: DeployJob
+        dependsOn: BuildJob
+        strategy:
+          matrix:
+            a:
+              name: a
+            b:
+              name: b
+
+        steps:
+          - script: |
+              echo $(name)
+            displayName: "simple echo"
