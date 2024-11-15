@@ -23,7 +23,7 @@ stages:
 
       - job: DeployJob
         dependsOn: BuildJob
-        condition: eq(dependencies.BuildJob.outputs['BuildJob.a.result'], 'Succeeded')
+        condition: eq(dependencies.BuildJob.a.outputs['result'], 'Succeeded')
         strategy:
           matrix:
             a:
