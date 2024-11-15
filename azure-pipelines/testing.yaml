@@ -28,9 +28,7 @@ stages:
 
       - job: DeployJob
         dependsOn: BuildJob
-        variables:
-          resultVar: $[ dependencies.BuildJob.outputs['${{ name }}.SetResult.jobResult'] ]
-        condition: eq(variables['resultVar'], 'Succeeded')
+        condition: eq($[ dependencies.BuildJob.outputs['$(name).SetResult.jobResult'] ], 'Succeeded')
         strategy:
           matrix:
             a:
