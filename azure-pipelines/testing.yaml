@@ -28,22 +28,7 @@ stages:
 
       - job: DeployJob
         dependsOn: BuildJob
-        condition: eq(dependencies.BuildJob.a.outputs['result.Result'], 'Succeeded')
-        strategy:
-          matrix:
-            a:
-              name: a
-            b:
-              name: b
-
-        steps:
-          - script: |
-              echo $(name)
-            displayName: "simple echo"
-
-      - job: DeployJob2
-        dependsOn: BuildJob
-        condition: eq(dependencies.BuildJob.outputs['BuildJob.a.result.Result'], 'Succeeded')
+        condition: eq(dependencies.BuildJob.outputs['a_result.Result'], 'Succeeded')
         strategy:
           matrix:
             a:
