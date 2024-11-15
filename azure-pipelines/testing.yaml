@@ -30,7 +30,7 @@ stages:
         condition: eq(dependencies.BuildJob.outputs['a.SetResult.jobResult'], 'Succeeded')
         strategy:
           matrix:
-            ${{ each job independencies.PrepareMatrix.outputs['matrix.jobMatrix'] }}:
+            ${{ each job in dependencies.PrepareMatrix.outputs['matrix.jobMatrix'] }}:
               ${{ job.name }}:
                 name: ${{ job.name }}
 
